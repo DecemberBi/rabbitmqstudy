@@ -8,8 +8,14 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 /**
+ * 工作队列：
+ *    1. 创建连接
+ *    2. 创建通道
+ *    3. 声明队列
+ *    4. 发布消息
+ *    5. 关闭通道和队列
+ *
  * @author biyukun
- * @description TODO
  * @date 2019-08-02
  */
 public class WorkSend {
@@ -22,7 +28,7 @@ public class WorkSend {
     String message = "work hard";
     channel.queueDeclare(QUENE_NAME, false, false, false, null);
     channel.basicPublish("", QUENE_NAME, null, message.getBytes());
-    System.out.println("[x] send " + message);
+    System.out.println("[work] send '" + message + "'");
     channel.close();
     connection.close();
   }

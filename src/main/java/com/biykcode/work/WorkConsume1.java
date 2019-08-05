@@ -1,6 +1,7 @@
 package com.biykcode.work;
 
 import com.biykcode.util.ConnectionUtils;
+import com.biykcode.util.WorkUtil;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.DeliverCallback;
@@ -10,7 +11,6 @@ import java.util.concurrent.TimeoutException;
 
 /**
  * @author biyukun
- * @description TODO
  * @date 2019-08-02
  */
 public class WorkConsume1 {
@@ -23,13 +23,11 @@ public class WorkConsume1 {
     channel.queueDeclare(QUEUE_NAME, false, false, false, null);
     DeliverCallback deliverCallback = (consumerTag, message) -> {
       String messageStr = new String(message.getBody(), "utf-8");
-      System.out.println("[work2] consume " + messageStr);
+      System.out.println("[work1] consume " + messageStr);
       try {
-        doWork(messageStr);
-      } catch (InterruptedException e) {
-        System.out.println("error...");
+        WorkUtil.doWork(messageStr);
       } finally {
-        System.out.println("[work2] done");
+        System.out.println("[work1] done");
       }
     };
     channel.basicConsume(QUEUE_NAME, true, deliverCallback, consumerTag -> {});
@@ -37,11 +35,5 @@ public class WorkConsume1 {
     connection.close();
   }
 
-  public static void doWork(String task) throws InterruptedException {
-    for (char ch : task.toCharArray()) {
-      if (ch == '.') {
-        Thread.sleep(1000);
-      }
-    }
-  }
+
 }
