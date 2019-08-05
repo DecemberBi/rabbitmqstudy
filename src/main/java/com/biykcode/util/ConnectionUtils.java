@@ -8,8 +8,12 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 /**
+ * 创建连接：
+ *    1. 创建连接工厂
+ *    2. 设置连接地址
+ *    3. 创建连接对象
+ *
  * @author biyukun
- * @description TODO
  * @date 2019-08-01
  */
 public class ConnectionUtils {
@@ -19,13 +23,5 @@ public class ConnectionUtils {
     connectionFactory.setHost("localhost");
     Connection connection = connectionFactory.newConnection();
     return connection;
-  }
-
-  public static Channel getChannel() throws IOException, TimeoutException {
-    ConnectionFactory connectionFactory = new ConnectionFactory();
-    connectionFactory.setHost("localhost");
-    Connection connection = connectionFactory.newConnection();
-    Channel channel = connection.createChannel();
-    return channel;
   }
 }
