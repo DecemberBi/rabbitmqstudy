@@ -1,4 +1,4 @@
-package com.biykcode.work;
+package com.biykcode.publishSubscribe;
 
 import com.biykcode.util.ConnectionUtils;
 import com.rabbitmq.client.Channel;
@@ -8,30 +8,28 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 /**
- * 工作队列：
+ * 发布订阅模型：
  *    1. 创建连接
  *    2. 创建通道
- *    3. 声明队列
+ *    3. 交换机声明
  *    4. 发布消息
- *    5. 关闭通道和队列
+ *    5. 关闭通道和连接
  *
  * @author biyukun
- * @date 2019-08-02
+ * @date 2019-08-06
  */
-public class WorkSend {
+public class PSSend {
 
-  private static final String QUENE_NAME = "work_queue";
+  public static final String QUEUE_NAME = "ps queue";
+  public static final String EXCHANGE_NAME = "fanout";
 
   public static void main(String[] args) throws IOException, TimeoutException {
     Connection connection = ConnectionUtils.getConnection();
     Channel channel = connection.createChannel();
-    String message = "work hard";
-    channel.queueDeclare(QUENE_NAME, false, false, false, null);
-    for (int i = 0; i < 6; i++) {
-      message += ".";
-      channel.basicPublish("", QUENE_NAME, null, message.getBytes());
-      System.out.println("[work] send '" + message + "'");
-    }
+    channel.exchangeDeclare("logs", "fanout");
+    String message = "ps: do a good man";
+    channel.basicPublish(EXCHANGE_NAME, "", null, message.getBytes());
+    System.out.println("[ps] send '" + message + "'");
     channel.close();
     connection.close();
   }
