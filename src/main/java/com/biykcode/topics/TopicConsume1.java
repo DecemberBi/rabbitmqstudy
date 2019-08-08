@@ -22,8 +22,9 @@ public class TopicConsume1 {
     Connection connection = ConnectionUtils.getConnection();
     Channel channel = connection.createChannel();
     channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-    channel.exchangeDeclare(EXCHANGE_NAME, "topic");
-    channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, "blue.cat");
+//    channel.exchangeDeclare(EXCHANGE_NAME, "topic");
+    // FIXME 非常困惑的一点是：路由键通配符有时候收不到消息，有时候又能收到
+    channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, "blue.*");
     DeliverCallback deliverCallback = (consumerTag, message) -> {
       String msg = new String(message.getBody());
       System.out.println("[topic] consume1 " + msg);

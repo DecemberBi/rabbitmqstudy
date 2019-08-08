@@ -21,8 +21,8 @@ public class TopicConsume2 {
     Connection connection = ConnectionUtils.getConnection();
     Channel channel = connection.createChannel();
     channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-    channel.exchangeDeclare(EXCHANGE_NAME, "topic");
-    channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, "11");
+//    channel.exchangeDeclare(EXCHANGE_NAME, "topic");
+    channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, "blue.cat");
     DeliverCallback deliverCallback = (consumerTag, message) -> {
       String msg = new String(message.getBody());
       System.out.println("[topic] consume2 " + msg);
